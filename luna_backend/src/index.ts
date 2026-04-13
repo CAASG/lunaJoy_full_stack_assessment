@@ -14,6 +14,7 @@ import cors from 'cors';
 import { env } from './config/env.js';
 import { logger } from './lib/logger.js';
 import authRoutes from './routes/auth.routes.js';
+import logRoutes from './routes/log.routes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
@@ -30,6 +31,8 @@ app.get('/api/health', (_req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/log', logRoutes);
+app.use('/api/logs', logRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);
