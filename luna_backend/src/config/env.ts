@@ -5,11 +5,10 @@
  * preventing runtime surprises from misconfigured environments.
  */
 
-import dotenv from 'dotenv';
 import { z } from 'zod';
-import { logger } from '../lib/logger';
+import { logger } from '../lib/logger.js';
 
-dotenv.config();
+// NOTE: dotenv is loaded in index.ts before any module imports
 
 const envSchema = z.object({
   PORT: z.string().default('3001'),
