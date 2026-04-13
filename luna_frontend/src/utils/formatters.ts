@@ -42,3 +42,35 @@ export function formatDisplayDate(isoDate: string): string {
 export function getTodayISO(): string {
   return format(new Date(), 'yyyy-MM-dd');
 }
+
+/**
+ * Transforms raw DailyLog entries into chart-ready data points.
+ * Each point has a formatted date label and values for all trackable parameters.
+ * Used with useMemo to avoid recomputation on every render.
+ */
+export function transformLogsForChart(
+  logs: Array<{
+    logDate: string;
+    moodRating: number;
+    anxietyLevel: number;
+    sleepHours: number;
+    sleepQuality: number;
+    activityDurationMin: number;
+    socialFrequency: number;
+    stressLevel: number;
+  }>
+): Array<Record<string, string | number>> {
+  // Defensive: return empty array for null/undefined input
+  if (!logs?.length) return [];
+
+  return logs.map((log) => ({
+    date: formatChartDate(log.logDate),
+    moodRating: log.moodRating,
+    anxietyLevel: log.anxietyLevel,
+    sleepHours: log.sleepHours,
+    sleepQuality: log.sleepQuality,
+    activityDurationMin: log.activityDurationMin,
+    socialFrequency: log.socialFrequency,
+    stressLevel: log.stressLevel,
+  }));
+}
