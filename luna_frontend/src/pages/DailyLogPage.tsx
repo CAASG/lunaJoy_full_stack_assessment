@@ -8,9 +8,9 @@
  * step navigation by local useState, and API calls by useMutation.
  */
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { apiClient } from '../api/client';
@@ -32,6 +32,7 @@ const TOTAL_STEPS = 8;
 export function DailyLogPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { register, setValue, watch, handleSubmit, getValues } =
     useForm<CreateLogPayload>({
@@ -59,6 +60,8 @@ export function DailyLogPage() {
       return response.data.log;
     },
     onSuccess: () => {
+      // Invalidate logs cache so History and Dashboard show the new entry immediately
+      queryClient.invalidateQueries({ queryKey: ['logs'] });
       toast.success('Thank you for checking in today! Your entry has been saved.');
       navigate('/dashboard');
     },
@@ -71,12 +74,22 @@ export function DailyLogPage() {
   const goBack = () => setCurrentStep((s) => Math.max(s - 1, 1));
   const goToStep = (step: number) => setCurrentStep(step);
 
-  const onSubmit = handleSubmit((data) => {
-    submitMutation.mutate(data);
-  });
+  /**
+   * Manually triggers form validation and submission.
+   * Uses type="button" on the submit button to prevent browser auto-submit.
+   */
+  const onManualSubmit = () => {
+    handleSubmit((data) => {
+      submitMutation.mutate(data);
+    })();
+  };
 
-  /** Renders the current step component based on step number */
-  const stepContent = useMemo(() => {
+  /**
+   * Renders the current step component based on step number.
+   * Not memoized intentionally: watch() values must trigger re-renders
+   * so sliders and emoji selectors reflect the current form state.
+   */
+  function renderStep() {
     switch (currentStep) {
       case 1:
         return <MoodStep setValue={setValue} watch={watch} />;
@@ -97,7 +110,7 @@ export function DailyLogPage() {
       default:
         return null;
     }
-  }, [currentStep, register, setValue, watch, getValues]);
+  }
 
   return (
     <div className="space-y-6">
@@ -110,10 +123,10 @@ export function DailyLogPage() {
 
       <StepProgress currentStep={currentStep} totalSteps={TOTAL_STEPS} />
 
-      <form onSubmit={onSubmit}>
+      <div>
         <div className="rounded-xl bg-white border border-luna-cream-dark p-6 min-h-[280px]">
           <div key={currentStep} className="animate-[fadeSlideIn_0.3s_ease-out]">
-            {stepContent}
+            {renderStep()}
           </div>
         </div>
 
@@ -133,14 +146,15 @@ export function DailyLogPage() {
             </Button>
           ) : (
             <Button
-              type="submit"
+              type="button"
+              onClick={onManualSubmit}
               disabled={submitMutation.isPending}
             >
               {submitMutation.isPending ? 'Saving...' : 'Submit Entry'}
             </Button>
           )}
         </div>
-      </form>
+      </div>
     </div>
   );
 }

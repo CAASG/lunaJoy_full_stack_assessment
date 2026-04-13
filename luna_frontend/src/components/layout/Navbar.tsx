@@ -40,6 +40,9 @@ export function Navbar() {
             <Link to="/log" className={linkClass('/log')}>
               New Entry
             </Link>
+            <Link to="/history" className={linkClass('/history')}>
+              History
+            </Link>
           </div>
         </div>
 

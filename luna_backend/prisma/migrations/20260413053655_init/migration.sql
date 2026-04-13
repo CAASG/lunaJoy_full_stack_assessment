@@ -1,22 +1,24 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "googleId" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "avatarUrl" TEXT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "DailyLog" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "logDate" DATETIME NOT NULL,
+    "logDate" TIMESTAMP(3) NOT NULL,
     "moodRating" INTEGER NOT NULL,
     "anxietyLevel" INTEGER NOT NULL,
-    "sleepHours" REAL NOT NULL,
+    "sleepHours" DOUBLE PRECISION NOT NULL,
     "sleepQuality" INTEGER NOT NULL,
     "sleepDisturbances" TEXT,
     "activityType" TEXT,
@@ -26,9 +28,10 @@ CREATE TABLE "DailyLog" (
     "symptomsPresent" BOOLEAN NOT NULL DEFAULT false,
     "symptomsSeverity" INTEGER,
     "symptomsNotes" TEXT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
-    CONSTRAINT "DailyLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "DailyLog_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -42,3 +45,6 @@ CREATE INDEX "DailyLog_userId_logDate_idx" ON "DailyLog"("userId", "logDate");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "DailyLog_userId_logDate_key" ON "DailyLog"("userId", "logDate");
+
+-- AddForeignKey
+ALTER TABLE "DailyLog" ADD CONSTRAINT "DailyLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

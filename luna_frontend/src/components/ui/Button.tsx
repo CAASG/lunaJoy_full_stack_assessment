@@ -39,7 +39,7 @@ export function Button({
         focus:ring-luna-blue focus:ring-offset-2
         ${variantClasses[variant]}
         ${sizeClasses[size]}
-        ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+        ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
         ${className}
       `}
       disabled={disabled}

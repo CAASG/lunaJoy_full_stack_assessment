@@ -48,10 +48,10 @@ export function ParameterSelector({ selected, onChange }: ParameterSelectorProps
                 transition-all duration-200
                 ${
                   isSelected
-                    ? 'bg-luna-blue-light text-luna-dark ring-1 ring-luna-blue'
+                    ? 'bg-luna-blue-light text-luna-dark ring-1 ring-luna-blue cursor-pointer'
                     : isDisabled
                       ? 'bg-luna-cream-dark text-luna-warm-gray opacity-50 cursor-not-allowed'
-                      : 'bg-luna-cream-dark text-luna-warm-gray hover:bg-luna-cream'
+                      : 'bg-luna-cream-dark text-luna-warm-gray hover:bg-luna-cream cursor-pointer'
                 }
               `}
               aria-pressed={isSelected}

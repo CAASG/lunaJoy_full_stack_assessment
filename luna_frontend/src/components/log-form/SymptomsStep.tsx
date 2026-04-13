@@ -42,7 +42,7 @@ export function SymptomsStep({ register, setValue, watch }: SymptomsStepProps) {
             setValue('symptomsSeverity', null);
             setValue('symptomsNotes', null);
           }}
-          className={`px-6 py-3 rounded-xl transition-all duration-200 ${
+          className={`px-6 py-3 rounded-xl transition-all duration-200 cursor-pointer ${
             !symptomsPresent
               ? 'bg-luna-green-light ring-2 ring-luna-green text-luna-dark'
               : 'bg-luna-cream-dark text-luna-warm-gray hover:bg-luna-cream'
@@ -58,7 +58,7 @@ export function SymptomsStep({ register, setValue, watch }: SymptomsStepProps) {
               setValue('symptomsSeverity', 1);
             }
           }}
-          className={`px-6 py-3 rounded-xl transition-all duration-200 ${
+          className={`px-6 py-3 rounded-xl transition-all duration-200 cursor-pointer ${
             symptomsPresent
               ? 'bg-luna-lavender-light ring-2 ring-luna-lavender text-luna-dark'
               : 'bg-luna-cream-dark text-luna-warm-gray hover:bg-luna-cream'

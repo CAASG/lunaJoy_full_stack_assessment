@@ -9,7 +9,7 @@ A web application that allows patients to log their daily mental health status a
 |---|---|
 | Framework | Express.js (v5) |
 | Language | TypeScript |
-| Database | SQLite via Prisma ORM + libSQL adapter |
+| Database | PostgreSQL (Supabase) via Prisma ORM |
 | Authentication | Google OAuth 2.0 + JWT |
 | Real-time | Socket.io |
 | Validation | Zod |
@@ -46,6 +46,7 @@ A web application that allows patients to log their daily mental health status a
 - **Node.js** >= 18
 - **npm** >= 9
 - A **Google Cloud** project with OAuth 2.0 credentials ([setup guide](https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid))
+- A **Supabase** project (free tier) for PostgreSQL database ([supabase.com](https://supabase.com))
 
 ## Getting Started
 
@@ -66,6 +67,7 @@ cp .env.example .env
 
 Edit `.env` with your values:
 ```
+DATABASE_URL=postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres
 GOOGLE_CLIENT_ID=your_google_client_id
 JWT_SECRET=a_strong_random_string_min_16_chars
 ```

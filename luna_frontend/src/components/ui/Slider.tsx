@@ -41,6 +41,7 @@ export function Slider({
         value={clampedValue}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full h-2 bg-luna-cream-dark rounded-lg appearance-none cursor-pointer
+          cursor-pointer
           [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5
           [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full
           [&::-webkit-slider-thumb]:bg-luna-blue [&::-webkit-slider-thumb]:cursor-pointer

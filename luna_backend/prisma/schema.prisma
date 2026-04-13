@@ -7,7 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model User {
@@ -56,7 +56,6 @@ model DailyLog {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  // Business rule: one log per user per day
-  @@unique([userId, logDate])
+  // Allow multiple logs per day for flexible tracking
   @@index([userId, logDate])
 }

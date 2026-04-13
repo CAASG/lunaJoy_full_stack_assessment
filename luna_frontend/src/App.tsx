@@ -18,6 +18,7 @@ import { Navbar } from './components/layout/Navbar';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { DailyLogPage } from './pages/DailyLogPage';
+import { HistoryPage } from './pages/HistoryPage';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? '';
 
@@ -43,6 +44,7 @@ function AuthenticatedLayout() {
           <Routes>
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="log" element={<DailyLogPage />} />
+            <Route path="history" element={<HistoryPage />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </ErrorBoundary>

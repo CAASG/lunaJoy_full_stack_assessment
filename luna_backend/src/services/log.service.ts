@@ -58,25 +58,6 @@ export async function createLog(
   const logDate = startOfDay(parseISO(data.logDate));
 
   try {
-    // Check for existing log on this date
-    const existing = await prisma.dailyLog.findUnique({
-      where: {
-        userId_logDate: { userId, logDate },
-      },
-    });
-
-    if (existing) {
-      return {
-        success: false,
-        error: new AppError(
-          ErrorCodes.LOG_DUPLICATE_DATE,
-          `A log for ${data.logDate} already exists. Use PUT /api/log/${existing.id} to update it.`,
-          409,
-          { existingLogId: existing.id, logDate: data.logDate }
-        ),
-      };
-    }
-
     const log = await prisma.dailyLog.create({
       data: {
         userId,

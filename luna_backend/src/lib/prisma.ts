@@ -1,27 +1,31 @@
 /**
  * @module prisma
  * @description Singleton Prisma client instance shared across the application.
- * Uses @prisma/adapter-libsql for SQLite compatibility with Prisma 7.
+ * Uses @prisma/adapter-pg for PostgreSQL (Supabase) with Prisma 7.
  * Singleton pattern prevents connection leaks during hot-reload in development.
  */
 
+import pg from 'pg';
 import { PrismaClient } from '../generated/prisma/client.js';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
-import { createClient } from '@libsql/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 const globalForPrisma = globalThis as unknown as {
   prisma: InstanceType<typeof PrismaClient> | undefined;
 };
 
 /**
- * Creates the Prisma client with the libSQL adapter for SQLite.
- * Reads DATABASE_URL from environment (set via .env and dotenv).
+ * Creates the Prisma client with the pg adapter for PostgreSQL.
+ * Reads DATABASE_URL from environment for connection.
  */
 function createPrismaClient(): InstanceType<typeof PrismaClient> {
-  const libsql = createClient({
-    url: process.env.DATABASE_URL ?? 'file:./prisma/dev.db',
-  });
-  const adapter = new PrismaLibSql(libsql);
+  // Defensive: ensure DATABASE_URL is set
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error('DATABASE_URL environment variable is not set. Check your .env file.');
+  }
+
+  const pool = new pg.Pool({ connectionString });
+  const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 }
 

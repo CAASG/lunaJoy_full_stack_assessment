@@ -27,7 +27,7 @@ export function EmojiRating({ value, onChange }: EmojiRatingProps) {
           type="button"
           onClick={() => onChange(item.value)}
           className={`
-            flex flex-col items-center gap-1 p-2 sm:p-3 rounded-xl transition-all duration-200
+            flex flex-col items-center gap-1 p-2 sm:p-3 rounded-xl transition-all duration-200 cursor-pointer
             ${
               value === item.value
                 ? 'bg-luna-blue-light scale-110 shadow-sm ring-2 ring-luna-blue'

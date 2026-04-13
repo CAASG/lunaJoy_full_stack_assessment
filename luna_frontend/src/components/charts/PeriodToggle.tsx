@@ -16,7 +16,7 @@ export function PeriodToggle({ period, onChange }: PeriodToggleProps) {
         type="button"
         onClick={() => onChange('week')}
         className={`
-          px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200
+          px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer
           ${period === 'week' ? 'bg-white text-luna-dark shadow-sm' : 'text-luna-warm-gray hover:text-luna-dark'}
         `}
       >
@@ -26,7 +26,7 @@ export function PeriodToggle({ period, onChange }: PeriodToggleProps) {
         type="button"
         onClick={() => onChange('month')}
         className={`
-          px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200
+          px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer
           ${period === 'month' ? 'bg-white text-luna-dark shadow-sm' : 'text-luna-warm-gray hover:text-luna-dark'}
         `}
       >
