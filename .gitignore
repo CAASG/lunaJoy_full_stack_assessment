@@ -10,12 +10,15 @@ node_modules/
 .env.local
 
 # Database
-prisma/*.db
-prisma/*.db-journal
+*.db
+*.db-journal
 
 # Build output
 dist/
 build/
+
+# Prisma generated client
+src/generated/
 
 # IDE
 .vscode/

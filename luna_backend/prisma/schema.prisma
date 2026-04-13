@@ -1,0 +1,62 @@
+// LunaJoy - Mental Health Progress Tracker
+// Database schema for users and daily mental health logs
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  googleId  String   @unique
+  email     String   @unique
+  name      String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  logs      DailyLog[]
+}
+
+model DailyLog {
+  id                  String   @id @default(uuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logDate             DateTime
+
+  // Mood: 1 (very sad) to 5 (very happy)
+  moodRating          Int
+
+  // Anxiety: 1 (none) to 5 (severe)
+  anxietyLevel        Int
+
+  // Sleep tracking
+  sleepHours          Float
+  sleepQuality        Int      // 1 (very poor) to 5 (excellent)
+  sleepDisturbances   String?  // Free-text description
+
+  // Physical activity
+  activityType        String?  // e.g., "Walking", "Yoga", "Running"
+  activityDurationMin Int      // Duration in minutes, 0 if none
+
+  // Social interactions: 1 (none) to 5 (very frequent)
+  socialFrequency     Int
+
+  // Stress: 1 (none) to 5 (extreme)
+  stressLevel         Int
+
+  // Depression/Anxiety symptoms
+  symptomsPresent     Boolean  @default(false)
+  symptomsSeverity    Int?     // 1 (mild) to 5 (severe), null if not present
+  symptomsNotes       String?  // Free-text for specific symptoms
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Business rule: one log per user per day
+  @@unique([userId, logDate])
+  @@index([userId, logDate])
+}
