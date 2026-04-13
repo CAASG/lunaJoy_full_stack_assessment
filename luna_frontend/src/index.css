@@ -36,3 +36,25 @@ body {
 #root {
   min-height: 100vh;
 }
+
+/* Step transition animation for the daily log wizard */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Smooth fade-in for conditional form sections */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-in {
+  animation: fadeIn 0.25s ease-out;
+}

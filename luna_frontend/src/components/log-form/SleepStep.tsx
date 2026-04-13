@@ -5,6 +5,7 @@
  */
 
 import { Slider } from '../ui/Slider';
+import { InfoTooltip } from '../ui/Tooltip';
 import { SLEEP_QUALITY_LABELS } from '../../utils/constants';
 import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import type { CreateLogPayload } from '../../types';
@@ -21,7 +22,10 @@ export function SleepStep({ register, setValue, watch }: SleepStepProps) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-xl font-medium text-luna-dark">Sleep Patterns</h2>
+        <h2 className="text-xl font-medium text-luna-dark inline-flex items-center gap-2">
+          Sleep Patterns
+          <InfoTooltip content="Sleep quality strongly correlates with mental health. Tracking it helps identify what affects your rest." />
+        </h2>
         <p className="text-sm text-luna-warm-gray mt-1">
           Good sleep is a foundation for wellbeing. How did you sleep?
         </p>

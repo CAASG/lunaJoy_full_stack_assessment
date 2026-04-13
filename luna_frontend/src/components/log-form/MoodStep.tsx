@@ -5,6 +5,7 @@
  */
 
 import { EmojiRating } from '../ui/EmojiRating';
+import { InfoTooltip } from '../ui/Tooltip';
 import type { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import type { CreateLogPayload } from '../../types';
 
@@ -19,7 +20,10 @@ export function MoodStep({ setValue, watch }: MoodStepProps) {
   return (
     <div className="space-y-6 text-center">
       <div>
-        <h2 className="text-xl font-medium text-luna-dark">How are you feeling today?</h2>
+        <h2 className="text-xl font-medium text-luna-dark inline-flex items-center gap-2">
+          How are you feeling today?
+          <InfoTooltip content="Tracking your mood daily helps identify patterns and triggers over time." />
+        </h2>
         <p className="text-sm text-luna-warm-gray mt-1">
           Choose the emoji that best represents your mood right now.
         </p>

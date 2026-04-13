@@ -112,7 +112,9 @@ export function DailyLogPage() {
 
       <form onSubmit={onSubmit}>
         <div className="rounded-xl bg-white border border-luna-cream-dark p-6 min-h-[280px]">
-          {stepContent}
+          <div key={currentStep} className="animate-[fadeSlideIn_0.3s_ease-out]">
+            {stepContent}
+          </div>
         </div>
 
         <div className="flex justify-between mt-6">

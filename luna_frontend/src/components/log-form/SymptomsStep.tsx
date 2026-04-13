@@ -6,6 +6,7 @@
  */
 
 import { Slider } from '../ui/Slider';
+import { InfoTooltip } from '../ui/Tooltip';
 import { SYMPTOM_SEVERITY_LABELS } from '../../utils/constants';
 import type { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import type { CreateLogPayload } from '../../types';
@@ -23,7 +24,10 @@ export function SymptomsStep({ register, setValue, watch }: SymptomsStepProps) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-xl font-medium text-luna-dark">Symptoms Check</h2>
+        <h2 className="text-xl font-medium text-luna-dark inline-flex items-center gap-2">
+          Symptoms Check
+          <InfoTooltip content="Recording symptoms helps your care team understand your experience and track progress over time." />
+        </h2>
         <p className="text-sm text-luna-warm-gray mt-1">
           Are you experiencing any symptoms of depression or anxiety?
           There is no judgment here — this helps track patterns.
