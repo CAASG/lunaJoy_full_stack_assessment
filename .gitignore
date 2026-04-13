@@ -1,7 +1,6 @@
 # Plan and test specification (internal only)
 tech.md
 PLAN.md
-.claude
 
 # Dependencies
 node_modules/
@@ -24,6 +23,7 @@ src/generated/
 # IDE
 .vscode/
 .idea/
+.claude/
 
 # OS
 .DS_Store
