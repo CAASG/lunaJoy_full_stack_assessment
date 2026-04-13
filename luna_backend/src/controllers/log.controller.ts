@@ -2,13 +2,16 @@
  * @module log.controller
  * @description Handles daily mental health log CRUD operations.
  * Converts service Result outcomes into HTTP responses.
- * Socket.io event emission will be added in Phase 5.
+ * Emits Socket.io events after successful mutations to enable
+ * real-time chart updates on connected clients.
  */
 
 import type { Request, Response, NextFunction } from 'express';
+import type { Server } from 'socket.io';
 import { createLog, getLogs } from '../services/log.service.js';
 import { getLogsQuerySchema } from '../schemas/log.schema.js';
 import { AppError, ErrorCodes } from '../lib/errors.js';
+import { logger } from '../lib/logger.js';
 
 /**
  * POST /api/log
@@ -41,7 +44,12 @@ export async function createLogHandler(
     return;
   }
 
-  // Phase 5: emit Socket.io event here -> io.to(`user:${req.user.id}`).emit('log:created', { log: result.data })
+  // Emit real-time event to the user's socket room
+  const io = req.app.locals.io as Server | undefined;
+  if (io) {
+    io.to(`user:${req.user.id}`).emit('log:created', { log: result.data });
+    logger.info({ userId: req.user.id }, 'Emitted log:created socket event');
+  }
 
   res.status(201).json({ log: result.data });
 }

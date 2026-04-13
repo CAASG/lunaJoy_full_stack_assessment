@@ -1,7 +1,7 @@
 /**
  * @module App
  * @description Root application component. Sets up all providers
- * (Google OAuth, TanStack Query, Auth) and defines the route structure.
+ * (Google OAuth, TanStack Query, Auth, Socket.io) and defines the route structure.
  * Protected routes require authentication; public routes don't.
  */
 
@@ -10,6 +10,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
+import { SocketProvider } from './context/SocketContext';
+import { useAuth } from './hooks/useAuth';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { ErrorBoundary } from './components/layout/ErrorBoundary';
 import { Navbar } from './components/layout/Navbar';
@@ -49,29 +51,43 @@ function AuthenticatedLayout() {
   );
 }
 
+/**
+ * Inner shell that has access to AuthContext (must be inside AuthProvider).
+ * Wires the auth token to SocketProvider for real-time updates.
+ */
+function AppShell() {
+  const { token } = useAuth();
+
+  return (
+    <SocketProvider token={token} queryClient={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/*" element={<AuthenticatedLayout />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: '#FFF8F0',
+            color: '#374151',
+            border: '1px solid #F5EDE3',
+          },
+        }}
+      />
+    </SocketProvider>
+  );
+}
+
 function App() {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path="/*" element={<AuthenticatedLayout />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-          <Toaster
-            position="bottom-right"
-            toastOptions={{
-              style: {
-                background: '#FFF8F0',
-                color: '#374151',
-                border: '1px solid #F5EDE3',
-              },
-            }}
-          />
+          <AppShell />
         </AuthProvider>
       </QueryClientProvider>
     </GoogleOAuthProvider>
